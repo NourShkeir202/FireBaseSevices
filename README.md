@@ -7,9 +7,9 @@ A new Flutter project.
 This project is a starting point for a Flutter application.
 
 Firebase Services
-## AuthServices
+# AuthServices
 
-# Auth user nameandpassword done :)
+## Auth user nameandpassword done :)
 
 Auth GoogleSignIn  working (:
 Auth Facebook Later (:
