@@ -14,6 +14,7 @@ class SignUpScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     var emailController =TextEditingController();
     var nameController =TextEditingController();
+    var phoneController =TextEditingController();
     var passwordController =TextEditingController();
     var formKey =GlobalKey<FormState>();
     return  BlocProvider(
@@ -22,13 +23,14 @@ class SignUpScreen extends StatelessWidget {
       child: BlocConsumer<SignUpCubit,SignUpStates>(
         listener: (context,state)
         {
+          if(state is UserCreateSuccessState)
+          {
+            showToast(text: "Sign Up Success (:", state: ToastStates.SUCCESS);
+            Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=>LoginScreen()), (route) => false);
+          }
           if(state is SignUpErrorState)
           {
             showToast(text: state.error, state: ToastStates.ERROR);
-          }
-          if(state is SignUpSuccessState)
-          {
-            navigateTo(context, LoginScreen());
           }
         },
         builder: (context,state)
@@ -53,7 +55,7 @@ class SignUpScreen extends StatelessWidget {
                       Align(
                         alignment: Alignment.center,
                         child: Text(
-                          "Signup".toUpperCase(),
+                          "Register".toUpperCase(),
                           style: Theme.of(context).textTheme.headline2,
                         ),
                       ),
@@ -67,13 +69,29 @@ class SignUpScreen extends StatelessWidget {
                           {
                             if(value.isEmpty)
                             {
-                              return "Email Must Not Be Empty";
+                              return "UserName Must Not Be Empty";
                             }
                             return null;
                           },
                           label: "UserName",
                           prefix: Icons.person,
                           hint: "UserName"
+                      ),
+                      const SizedBox(height: 20,),
+                      defaultFormField(
+                          controller:phoneController,
+                          type: TextInputType.phone,
+                          validate: (String value)
+                          {
+                            if(value.isEmpty)
+                            {
+                              return "Phone Must Not Be Empty";
+                            }
+                            return null;
+                          },
+                          label: "Phone Number",
+                          prefix: Icons.phone,
+                          hint: "Phone Number"
                       ),
                       const SizedBox(height: 20,),
                       defaultFormField(
@@ -105,7 +123,7 @@ class SignUpScreen extends StatelessWidget {
                           {
                             if(value.isEmpty)
                             {
-                              return "Email Must Not Be Empty";
+                              return "Password Must Not Be Empty";
                             }
                             return null;
                           },
@@ -115,10 +133,19 @@ class SignUpScreen extends StatelessWidget {
                       ),
                       const  SizedBox(height: 20,),
                       ConditionalBuilder(
-                        condition: true,
+                        condition: state is! SignUpLoadingState,
                         builder: (context)=> defaultbutton(titleButton: "SignUp",onPressed: ()
                         {
-                           cubit.SignupUser(email: emailController.text, password: passwordController.text);
+                          if(formKey.currentState.validate())
+                          {
+                            cubit.SignupUser(
+                              email: emailController.text,
+                              password: passwordController.text,
+                              name: nameController.text,
+                              phone: phoneController.text,
+                            );
+                          }
+
                         }),
                         fallback: (context)=>Center(child: CircularProgressIndicator(),),
                       ),
@@ -128,11 +155,11 @@ class SignUpScreen extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children:
                         [
-                          Text("Already have an Account ?",style: Theme.of(context).textTheme.headline6,),
+                          Text("Already have an Account ?",style: TextStyle(fontSize: 15),),
                           TextButton(onPressed: ()
                           {
-                            navigateTo(context, SignUpScreen());
-                          }, child: Text("SignIN".toUpperCase()))
+                            navigateTo(context, LoginScreen());
+                          }, child: Text("SignIn".toUpperCase()))
                         ],
                       ),
                     ],
