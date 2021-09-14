@@ -1,13 +1,16 @@
+import 'package:bloc/bloc.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:untitled3/shared/network/local/cache_helper.dart';
-
+import 'bloc_observer.dart';
 import 'moduels/home.dart';
 import 'moduels/login/login.dart';
 
 void main()async
+//
 {
   WidgetsFlutterBinding.ensureInitialized();
+  Bloc.observer = MyBlocObserver();
   await Firebase.initializeApp();
   await CacheHelper.init();
   Widget widget;
@@ -48,7 +51,18 @@ final Widget startWidget;
           elevation: 0
         )
       ),
-      home: startWidget
+      home: startWidget,
     );
   }
 }
+
+
+
+
+
+// work with git
+
+// 1. checkout master
+// 2. update master
+// 3. create branch with task name
+// 4. code...............................

@@ -38,7 +38,7 @@ class LoginScreen extends StatelessWidget {
         },
         builder: (context,state)
         {
-         var cubit= LoginCubit.get(context);
+          var cubit= LoginCubit.get(context);
          return Scaffold(
            appBar: AppBar(
                centerTitle: true,
@@ -94,7 +94,7 @@ class LoginScreen extends StatelessWidget {
                          {
                            if(value.isEmpty)
                            {
-                             return "Email Must Not Be Empty";
+                             return "Password Must Not Be Empty";
                            }
                            return null;
                          },
@@ -107,7 +107,13 @@ class LoginScreen extends StatelessWidget {
                        condition: state is! LoginLoadingState,
                        builder: (context)=> defaultbutton(titleButton: "Login",onPressed: ()
                        {
-                         cubit.userLogin(email: emailController.text, password: passwordController.text);
+                         if(formKey.currentState.validate())
+                         {
+                           cubit.userLogin(
+                               email: emailController.text,
+                               password: passwordController.text,
+                           );
+                         }
                        }),
                        fallback: (context)=>Center(child: CircularProgressIndicator(),),
                      ),

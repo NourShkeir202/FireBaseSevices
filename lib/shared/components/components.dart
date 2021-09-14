@@ -22,13 +22,13 @@ Color chooseToastColor(ToastStates state) {
 
   switch (state) {
     case ToastStates.SUCCESS:
-     const color = Colors.green;
+     color = Colors.green;
       break;
     case ToastStates.ERROR:
-      const color = Colors.red;
+     color = Colors.red;
       break;
     case ToastStates.WARNING:
-      const color = Colors.amber;
+     color = Colors.amber;
       break;
   }
 
